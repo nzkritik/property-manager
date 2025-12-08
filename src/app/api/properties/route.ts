@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
         bathrooms: body.bathrooms ? Number(body.bathrooms) : null,
         squareFeet: body.squareFeet ? Number(body.squareFeet) : null,
         rentAmount: body.rentAmount ? Number(body.rentAmount) : null,
+        depositAmount: body.depositAmount ? Number(body.depositAmount) : null, // Add this line
         images: null,
         documents: null,
       },

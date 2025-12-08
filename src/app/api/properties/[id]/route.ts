@@ -12,7 +12,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       where: { id: params.id },
       data: {
         address: String(body.address),
-        street: String(body.address), // Add this line
+        street: String(body.address),
         city: String(body.city),
         state: body.state ? String(body.state) : '',
         zipCode: body.zipCode ? String(body.zipCode) : '',
@@ -24,6 +24,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         bathrooms: body.bathrooms ? Number(body.bathrooms) : null,
         squareFeet: body.squareFeet ? Number(body.squareFeet) : null,
         rentAmount: body.rentAmount ? Number(body.rentAmount) : null,
+        depositAmount: body.depositAmount ? Number(body.depositAmount) : null,
         images: body.images ? JSON.stringify(body.images) : null,
         documents: body.documents ? JSON.stringify(body.documents) : null,
       },
