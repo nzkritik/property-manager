@@ -5,18 +5,18 @@ import Link from 'next/link';
 
 interface Property {
   id: string;
-  address: string;
+  street: string | null;
   city: string;
   state: string;
   zipCode: string;
   purchasePrice: number;
   purchaseDate: string;
-  currentValue: number;
-  propertyType: string;  // Keep as string
-  bedrooms?: number;
-  bathrooms?: number;
-  squareFeet?: number;
-  rentAmount?: number;
+  estimatedValue: number;
+  propertyType: string;
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  sqft?: number | null;
+  monthlyRent?: number | null;
 }
 
 export default function PropertiesPage() {
@@ -163,18 +163,18 @@ export default function PropertiesPage() {
   const openEditModal = (property: Property) => {
     setEditingProperty(property);
     setFormData({
-      address: property.address,
+      address: property.street || '',
       city: property.city,
       state: property.state,
       zipCode: property.zipCode,
       purchasePrice: property.purchasePrice.toString(),
       purchaseDate: property.purchaseDate.split('T')[0],
-      currentValue: property.currentValue.toString(),
+      currentValue: property.estimatedValue.toString(),
       propertyType: property.propertyType,
       bedrooms: property.bedrooms?.toString() || '',
       bathrooms: property.bathrooms?.toString() || '',
-      squareFeet: property.squareFeet?.toString() || '',
-      rentAmount: property.rentAmount?.toString() || '',
+      squareFeet: property.sqft?.toString() || '',
+      rentAmount: property.monthlyRent?.toString() || '',
     });
     setShowModal(true);
   };
@@ -256,7 +256,7 @@ export default function PropertiesPage() {
             {properties.map((property) => (
               <tr key={property.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">{property.address}</div>
+                  <div className="text-sm font-medium text-gray-900">{property.street || 'N/A'}</div>
                   <div className="text-sm text-gray-500">
                     {property.city}, {property.state} {property.zipCode}
                   </div>
@@ -268,10 +268,10 @@ export default function PropertiesPage() {
                   {formatCurrency(property.purchasePrice)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatCurrency(property.currentValue)}
+                  {formatCurrency(property.estimatedValue)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {property.rentAmount ? formatCurrency(property.rentAmount) : '-'}
+                  {property.monthlyRent ? formatCurrency(property.monthlyRent) : '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button
