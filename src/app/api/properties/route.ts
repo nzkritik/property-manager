@@ -40,12 +40,6 @@ const propertySchema = z.object({
 export async function GET() {
   try {
     const properties = await prisma.property.findMany({
-      include: {
-        transactions: {
-          orderBy: { date: 'desc' },
-          take: 5,
-        },
-      },
       orderBy: { createdAt: 'desc' },
     })
 
