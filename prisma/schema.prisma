@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id                String        @id @default(uuid())
+  
+  // Address
+  street            String
+  city              String
+  state             String
+  zipCode           String
+  country           String        @default("USA")
+  
+  // Purchase Details
+  purchasePrice     Float
+  purchaseDate      DateTime
+  depositAmount     Float
+  closingCosts      Float
+  
+  // Current Valuation
+  estimatedValue    Float
+  lastValuationDate DateTime
+  valuationSource   String
+  
+  // Mortgage
+  outstandingBalance Float
+  interestRate      Float
+  monthlyPayment    Float
+  lender            String?
+  mortgageStartDate DateTime?
+  termYears         Int?
+  
+  // Property Details
+  propertyType      String        // house, apartment, commercial, land
+  bedrooms          Int?
+  bathrooms         Float?
+  sqft              Int?
+  yearBuilt         Int?
+  
+  // Rental Info
+  monthlyRent       Float?
+  isRented          Boolean       @default(false)
+  tenantName        String?
+  leaseStart        DateTime?
+  leaseEnd          DateTime?
+  
+  // Expenses
+  annualPropertyTax Float
+  insurance         Float
+  hoaFees           Float?
+  maintenanceBudget Float
+  
+  // Media
+  images            Json          @default("[]")
+  documents         Json          @default("[]")
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  transactions      Transaction[]
+  
+  @@index([city, state])
+}
+
+model Transaction {
+  id                String    @id @default(uuid())
+  propertyId        String
+  property          Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  type              String    // rental_income, mortgage_payment, maintenance, utilities, insurance, property_tax, capital_improvement, other
+  amount            Float
+  date              DateTime
+  description       String
+  category          String
+  receiptUrl        String?
+  
+  isRecurring       Boolean   @default(false)
+  recurringInterval String?   // monthly, quarterly, annually
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([propertyId, date])
+  @@index([type])
+}
