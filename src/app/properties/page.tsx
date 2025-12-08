@@ -199,23 +199,18 @@ export default function PropertiesPage() {
 
   return (
     <div className="container mx-auto p-6">
-      {/* Navigation Links */}
       <nav className="mb-6 flex gap-4 text-sm">
-        <Link href="/" className="text-blue-600 hover:text-blue-800">
-          Dashboard
-        </Link>
+        <Link href="/" className="text-blue-600 hover:text-blue-800">Dashboard</Link>
         <span className="text-gray-400">|</span>
-        <Link href="/properties" className="font-semibold text-gray-900">
-          Properties
-        </Link>
+        <Link href="/properties" className="font-semibold text-gray-900">Properties</Link>
         <span className="text-gray-400">|</span>
-        <Link href="/transactions" className="text-blue-600 hover:text-blue-800">
-          Transactions
-        </Link>
+        <Link href="/mortgages" className="text-blue-600 hover:text-blue-800">Mortgages</Link>
         <span className="text-gray-400">|</span>
-        <Link href="/reports" className="text-blue-600 hover:text-blue-800">
-          Reports
-        </Link>
+        <Link href="/expenses" className="text-blue-600 hover:text-blue-800">Expenses</Link>
+        <span className="text-gray-400">|</span>
+        <Link href="/transactions" className="text-blue-600 hover:text-blue-800">Transactions</Link>
+        <span className="text-gray-400">|</span>
+        <Link href="/reports" className="text-blue-600 hover:text-blue-800">Reports</Link>
       </nav>
 
       <div className="flex justify-between items-center mb-6">

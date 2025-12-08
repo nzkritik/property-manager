@@ -12,6 +12,14 @@ export default function ReportsPage() {
           Properties
         </Link>
         <span className="text-gray-400">|</span>
+        <Link href="/mortgages" className="text-blue-600 hover:text-blue-800">
+          Mortgages
+        </Link>
+        <span className="text-gray-400">|</span>
+        <Link href="/expenses" className="text-blue-600 hover:text-blue-800">
+          Expenses
+        </Link>
+        <span className="text-gray-400">|</span>
         <Link href="/transactions" className="text-blue-600 hover:text-blue-800">
           Transactions
         </Link>
