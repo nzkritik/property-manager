@@ -66,7 +66,7 @@ model Property {
   maintenanceBudget Float
   
   // Media
-  images            Json          @default("[]")
+  images            String?       // Changed from Json to String - stores JSON as serialized string
   documents         Json          @default("[]")
   
   createdAt         DateTime      @default(now())
