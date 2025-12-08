@@ -3,5 +3,5 @@ const nextConfig = {
   experimental: {
   }
 }
-le.exports = nextConfig
+
 module.exports = nextConfig
