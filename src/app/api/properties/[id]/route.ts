@@ -11,20 +11,53 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const property = await prisma.property.update({
       where: { id: params.id },
       data: {
-        address: String(body.address),
-        street: String(body.address),
+        // Address
+        street: body.address ? String(body.address) : null,
         city: String(body.city),
         state: body.state ? String(body.state) : '',
         zipCode: body.zipCode ? String(body.zipCode) : '',
+        country: body.country || 'USA',
+        
+        // Purchase Details
         purchasePrice: Number(body.purchasePrice),
         purchaseDate: new Date(body.purchaseDate),
-        currentValue: Number(body.currentValue),
+        depositAmount: body.depositAmount ? Number(body.depositAmount) : null,
+        closingCosts: body.closingCosts ? Number(body.closingCosts) : 0,
+        
+        // Current Valuation
+        estimatedValue: Number(body.currentValue),
+        lastValuationDate: new Date(),
+        valuationSource: body.valuationSource || 'Manual Entry',
+        
+        // Mortgage
+        outstandingBalance: body.outstandingBalance ? Number(body.outstandingBalance) : 0,
+        interestRate: body.interestRate ? Number(body.interestRate) : 0,
+        monthlyPayment: body.monthlyPayment ? Number(body.monthlyPayment) : 0,
+        lender: body.lender || null,
+        mortgageStartDate: body.mortgageStartDate ? new Date(body.mortgageStartDate) : null,
+        termYears: body.termYears ? Number(body.termYears) : null,
+        
+        // Property Details
         propertyType: String(body.propertyType),
         bedrooms: body.bedrooms ? Number(body.bedrooms) : null,
         bathrooms: body.bathrooms ? Number(body.bathrooms) : null,
-        squareFeet: body.squareFeet ? Number(body.squareFeet) : null,
-        rentAmount: body.rentAmount ? Number(body.rentAmount) : null,
-        depositAmount: body.depositAmount ? Number(body.depositAmount) : null,
+        sqft: body.squareFeet ? Number(body.squareFeet) : null,
+        yearBuilt: body.yearBuilt ? Number(body.yearBuilt) : null,
+        
+        // Rental Info
+        monthlyRent: body.rentAmount ? Number(body.rentAmount) : null,
+        isRented: body.isRented || false,
+        tenantName: body.tenantName || null,
+        leaseStart: body.leaseStart ? new Date(body.leaseStart) : null,
+        leaseEnd: body.leaseEnd ? new Date(body.leaseEnd) : null,
+        
+        // Expenses
+        annualPropertyTax: body.annualPropertyTax ? Number(body.annualPropertyTax) : 0,
+        insurance: body.insurance ? Number(body.insurance) : 0,
+        hoaFees: body.hoaFees ? Number(body.hoaFees) : null,
+        maintenanceBudget: body.maintenanceBudget ? Number(body.maintenanceBudget) : 0,
+        
+        // Media
         images: body.images ? JSON.stringify(body.images) : null,
         documents: body.documents ? JSON.stringify(body.documents) : null,
       },

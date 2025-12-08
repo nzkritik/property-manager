@@ -30,7 +30,7 @@ model Property {
   purchasePrice     Float
   purchaseDate      DateTime
   depositAmount     Float?   // Make optional with ?
-  closingCosts      Float
+  closingCosts      Float?   // Make optional with ?
   
   // Current Valuation
   estimatedValue    Float
