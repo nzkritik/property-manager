@@ -12,6 +12,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       where: { id: params.id },
       data: {
         address: String(body.address),
+        street: String(body.address), // Add this line
         city: String(body.city),
         state: body.state ? String(body.state) : '',
         zipCode: body.zipCode ? String(body.zipCode) : '',

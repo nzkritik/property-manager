@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
     const property = await prisma.property.create({
       data: {
         address: String(body.address),
+        street: String(body.address), // Add this line - use address as street
         city: String(body.city),
         state: body.state ? String(body.state) : '',
         zipCode: body.zipCode ? String(body.zipCode) : '',

@@ -20,7 +20,7 @@ model Property {
   id                String        @id @default(uuid())
   
   // Address
-  street            String
+  street            String?       // Make optional with ? or remove this line if using address
   city              String
   state             String
   zipCode           String
