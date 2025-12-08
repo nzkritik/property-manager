@@ -1,41 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { z } from 'zod'
+import { PrismaClient } from '@prisma/client'
 
-const propertySchema = z.object({
-  street: z.string().min(1),
-  city: z.string().min(1),
-  state: z.string().min(1),
-  zipCode: z.string().min(1),
-  country: z.string().default('USA'),
-  purchasePrice: z.number().positive(),
-  purchaseDate: z.string().datetime(),
-  depositAmount: z.number().nonnegative(),
-  closingCosts: z.number().nonnegative(),
-  estimatedValue: z.number().positive(),
-  lastValuationDate: z.string().datetime(),
-  valuationSource: z.string(),
-  outstandingBalance: z.number().nonnegative(),
-  interestRate: z.number().nonnegative(),
-  monthlyPayment: z.number().nonnegative(),
-  lender: z.string().optional(),
-  mortgageStartDate: z.string().datetime().optional(),
-  termYears: z.number().int().positive().optional(),
-  propertyType: z.enum(['house', 'apartment', 'commercial', 'land']),
-  bedrooms: z.number().int().nonnegative().optional(),
-  bathrooms: z.number().nonnegative().optional(),
-  sqft: z.number().int().positive().optional(),
-  yearBuilt: z.number().int().optional(),
-  monthlyRent: z.number().nonnegative().optional(),
-  isRented: z.boolean().default(false),
-  tenantName: z.string().optional(),
-  leaseStart: z.string().datetime().optional(),
-  leaseEnd: z.string().datetime().optional(),
-  annualPropertyTax: z.number().nonnegative(),
-  insurance: z.number().nonnegative(),
-  hoaFees: z.number().nonnegative().optional(),
-  maintenanceBudget: z.number().nonnegative(),
-})
+const prisma = new PrismaClient()
 
 export async function GET() {
   try {
@@ -44,10 +10,10 @@ export async function GET() {
     })
 
     return NextResponse.json(properties)
-  } catch (error) {
+  } catch (error: any) {
     console.error('GET properties error:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch properties' },
+      { error: 'Failed to fetch properties', message: error.message },
       { status: 500 }
     )
   }
@@ -56,30 +22,41 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const validated = propertySchema.parse(body)
+    console.log('Received POST body:', JSON.stringify(body, null, 2))
 
+    // Create property directly without validation
     const property = await prisma.property.create({
       data: {
-        ...validated,
-        purchaseDate: new Date(validated.purchaseDate),
-        lastValuationDate: new Date(validated.lastValuationDate),
-        mortgageStartDate: validated.mortgageStartDate
-          ? new Date(validated.mortgageStartDate)
-          : null,
-        leaseStart: validated.leaseStart
-          ? new Date(validated.leaseStart)
-          : null,
-        leaseEnd: validated.leaseEnd
-          ? new Date(validated.leaseEnd)
-          : null,
+        address: String(body.address),
+        city: String(body.city),
+        state: body.state ? String(body.state) : '',
+        zipCode: body.zipCode ? String(body.zipCode) : '',
+        purchasePrice: Number(body.purchasePrice),
+        purchaseDate: new Date(body.purchaseDate),
+        currentValue: Number(body.currentValue),
+        propertyType: String(body.propertyType),
+        bedrooms: body.bedrooms ? Number(body.bedrooms) : null,
+        bathrooms: body.bathrooms ? Number(body.bathrooms) : null,
+        squareFeet: body.squareFeet ? Number(body.squareFeet) : null,
+        rentAmount: body.rentAmount ? Number(body.rentAmount) : null,
+        images: null,
+        documents: null,
       },
     })
 
+    console.log('Property created successfully:', property.id)
     return NextResponse.json(property, { status: 201 })
-  } catch (error) {
+  } catch (error: any) {
     console.error('POST property error:', error)
+    console.error('Error name:', error.name)
+    console.error('Error message:', error.message)
+
     return NextResponse.json(
-      { error: 'Failed to create property', details: error },
+      {
+        error: 'Failed to create property',
+        message: error.message,
+        name: error.name,
+      },
       { status: 500 }
     )
   }

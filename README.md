@@ -131,6 +131,26 @@ git push -u origin main
 
 ## 🔧 Troubleshooting
 
+### Prisma Module Errors
+
+If you get `Cannot find module '@prisma/engines'` or similar errors:
+
+```bash
+# Remove Prisma completely
+rm -rf node_modules/.prisma
+rm -rf node_modules/@prisma
+rm -rf node_modules/prisma
+
+# Reinstall dependencies
+npm install
+
+# Regenerate Prisma client
+npm run db:generate
+
+# Push schema to database
+npm run db:push
+```
+
 ### 404 Errors on Navigation
 
 If you get 404 errors when navigating to pages:
