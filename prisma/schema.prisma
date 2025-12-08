@@ -67,7 +67,7 @@ model Property {
   
   // Media
   images            String?       // Changed from Json to String - stores JSON as serialized string
-  documents         Json          @default("[]")
+  documents         String?       // Changed from Json to String - stores JSON as serialized string
   
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
