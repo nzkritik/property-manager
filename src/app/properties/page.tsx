@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 interface Property {
   id: string;
@@ -23,6 +24,8 @@ export default function PropertiesPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     address: '',
     city: '',
@@ -56,30 +59,51 @@ export default function PropertiesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaving(true);
+    setError(null);
+    
     try {
       const url = editingProperty ? `/api/properties/${editingProperty.id}` : '/api/properties';
       const method = editingProperty ? 'PUT' : 'POST';
       
+      const payload = {
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        purchasePrice: formData.purchasePrice,
+        purchaseDate: formData.purchaseDate,
+        currentValue: formData.currentValue,
+        propertyType: formData.propertyType,
+        bedrooms: formData.bedrooms || null,
+        bathrooms: formData.bathrooms || null,
+        squareFeet: formData.squareFeet || null,
+        rentAmount: formData.rentAmount || null,
+      };
+
+      console.log('Submitting:', payload);
+      
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          purchasePrice: parseFloat(formData.purchasePrice),
-          currentValue: parseFloat(formData.currentValue),
-          bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : null,
-          bathrooms: formData.bathrooms ? parseFloat(formData.bathrooms) : null,
-          squareFeet: formData.squareFeet ? parseFloat(formData.squareFeet) : null,
-          rentAmount: formData.rentAmount ? parseFloat(formData.rentAmount) : null,
-        }),
+        body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
-        await fetchProperties();
-        closeModal();
+      const data = await res.json();
+      
+      if (!res.ok) {
+        console.error('API Error:', data);
+        throw new Error(data.error || 'Failed to save property');
       }
+
+      console.log('Success:', data);
+      await fetchProperties();
+      closeModal();
     } catch (error) {
       console.error('Failed to save property:', error);
+      setError(error instanceof Error ? error.message : 'Failed to save property');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -137,6 +161,7 @@ export default function PropertiesPage() {
   const closeModal = () => {
     setShowModal(false);
     setEditingProperty(null);
+    setError(null);
   };
 
   const formatCurrency = (value: number) => {
@@ -153,6 +178,25 @@ export default function PropertiesPage() {
 
   return (
     <div className="container mx-auto p-6">
+      {/* Navigation Links */}
+      <nav className="mb-6 flex gap-4 text-sm">
+        <Link href="/" className="text-blue-600 hover:text-blue-800">
+          Dashboard
+        </Link>
+        <span className="text-gray-400">|</span>
+        <Link href="/properties" className="font-semibold text-gray-900">
+          Properties
+        </Link>
+        <span className="text-gray-400">|</span>
+        <Link href="/transactions" className="text-blue-600 hover:text-blue-800">
+          Transactions
+        </Link>
+        <span className="text-gray-400">|</span>
+        <Link href="/reports" className="text-blue-600 hover:text-blue-800">
+          Reports
+        </Link>
+      </nav>
+
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Properties</h1>
         <button
@@ -242,6 +286,13 @@ export default function PropertiesPage() {
               <h2 className="text-2xl font-bold mb-4">
                 {editingProperty ? 'Edit Property' : 'Add New Property'}
               </h2>
+              
+              {error && (
+                <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                  {error}
+                </div>
+              )}
+              
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2">
@@ -270,11 +321,10 @@ export default function PropertiesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      State *
+                      State
                     </label>
                     <input
                       type="text"
-                      required
                       value={formData.state}
                       onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                       className="w-full border border-gray-300 rounded px-3 py-2"
@@ -282,11 +332,10 @@ export default function PropertiesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ZIP Code *
+                      ZIP Code
                     </label>
                     <input
                       type="text"
-                      required
                       value={formData.zipCode}
                       onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
                       className="w-full border border-gray-300 rounded px-3 py-2"
@@ -398,15 +447,17 @@ export default function PropertiesPage() {
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50"
+                    disabled={saving}
+                    className="px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 disabled:opacity-50"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    disabled={saving}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {editingProperty ? 'Update' : 'Create'}
+                    {saving ? 'Saving...' : (editingProperty ? 'Update' : 'Create')}
                   </button>
                 </div>
               </form>

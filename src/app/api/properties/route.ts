@@ -45,6 +45,7 @@ export async function GET() {
 
     return NextResponse.json(properties)
   } catch (error) {
+    console.error('GET properties error:', error)
     return NextResponse.json(
       { error: 'Failed to fetch properties' },
       { status: 500 }
@@ -62,28 +63,23 @@ export async function POST(request: NextRequest) {
         ...validated,
         purchaseDate: new Date(validated.purchaseDate),
         lastValuationDate: new Date(validated.lastValuationDate),
-        mortgageStartDate: validated.mortgageStartDate 
-          ? new Date(validated.mortgageStartDate) 
+        mortgageStartDate: validated.mortgageStartDate
+          ? new Date(validated.mortgageStartDate)
           : null,
-        leaseStart: validated.leaseStart 
-          ? new Date(validated.leaseStart) 
+        leaseStart: validated.leaseStart
+          ? new Date(validated.leaseStart)
           : null,
-        leaseEnd: validated.leaseEnd 
-          ? new Date(validated.leaseEnd) 
+        leaseEnd: validated.leaseEnd
+          ? new Date(validated.leaseEnd)
           : null,
       },
     })
 
     return NextResponse.json(property, { status: 201 })
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid data', details: error.errors },
-        { status: 400 }
-      )
-    }
+    console.error('POST property error:', error)
     return NextResponse.json(
-      { error: 'Failed to create property' },
+      { error: 'Failed to create property', details: error },
       { status: 500 }
     )
   }
