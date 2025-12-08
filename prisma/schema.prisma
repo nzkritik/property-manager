@@ -16,15 +16,6 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-enum PropertyType {
-  SINGLE_FAMILY
-  MULTI_FAMILY
-  CONDO
-  TOWNHOUSE
-  COMMERCIAL
-  LAND
-}
-
 model Property {
   id                String        @id @default(uuid())
   
@@ -55,7 +46,7 @@ model Property {
   termYears         Int?
   
   // Property Details
-  propertyType      PropertyType   // house, apartment, commercial, land
+  propertyType      String        // Changed from PropertyType enum to String
   bedrooms          Int?
   bathrooms         Float?
   sqft              Int?

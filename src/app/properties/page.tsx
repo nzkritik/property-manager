@@ -12,7 +12,7 @@ interface Property {
   purchasePrice: number;
   purchaseDate: string;
   currentValue: number;
-  propertyType: string;
+  propertyType: string;  // Keep as string
   bedrooms?: number;
   bathrooms?: number;
   squareFeet?: number;
@@ -40,6 +40,15 @@ export default function PropertiesPage() {
     squareFeet: '',
     rentAmount: '',
   });
+
+  const PROPERTY_TYPES = [
+    { value: 'SINGLE_FAMILY', label: 'Single Family' },
+    { value: 'MULTI_FAMILY', label: 'Multi Family' },
+    { value: 'CONDO', label: 'Condo' },
+    { value: 'TOWNHOUSE', label: 'Townhouse' },
+    { value: 'COMMERCIAL', label: 'Commercial' },
+    { value: 'LAND', label: 'Land' },
+  ];
 
   useEffect(() => {
     fetchProperties();
@@ -363,12 +372,11 @@ export default function PropertiesPage() {
                       onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
                       className="w-full border border-gray-300 rounded px-3 py-2"
                     >
-                      <option value="SINGLE_FAMILY">Single Family</option>
-                      <option value="MULTI_FAMILY">Multi Family</option>
-                      <option value="CONDO">Condo</option>
-                      <option value="TOWNHOUSE">Townhouse</option>
-                      <option value="COMMERCIAL">Commercial</option>
-                      <option value="LAND">Land</option>
+                      {PROPERTY_TYPES.map(type => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div>
