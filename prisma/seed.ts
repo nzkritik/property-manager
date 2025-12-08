@@ -26,7 +26,7 @@ async function main() {
       lender: 'Wells Fargo',
       mortgageStartDate: new Date('2022-01-15'),
       termYears: 30,
-      propertyType: 'house',
+      propertyType: 'SINGLE_FAMILY', // Changed from 'house'
       bedrooms: 3,
       bathrooms: 2.5,
       sqft: 1800,
@@ -63,7 +63,7 @@ async function main() {
       lender: 'Chase Bank',
       mortgageStartDate: new Date('2023-03-20'),
       termYears: 30,
-      propertyType: 'apartment',
+      propertyType: 'MULTI_FAMILY', // Changed from 'apartment'
       bedrooms: 2,
       bathrooms: 2,
       sqft: 1200,
