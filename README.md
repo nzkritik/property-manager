@@ -128,3 +128,48 @@ git remote add origin <REPO_URL>
 git branch -M main
 git push -u origin main
 ```
+
+## 🔧 Troubleshooting
+
+### 404 Errors on Navigation
+
+If you get 404 errors when navigating to pages:
+
+```bash
+# Clear Next.js cache
+rm -rf .next
+
+# Regenerate Prisma client
+npm run db:generate
+
+# Restart dev server
+npm run dev
+```
+
+### Database Connection Issues
+
+```bash
+# Reset database
+npm run db:push
+
+# Reseed data
+npm run db:seed
+```
+
+### Port Already in Use
+
+```bash
+# Kill process on port 3000 (Linux/macOS)
+lsof -ti:3000 | xargs kill -9
+
+# Or use a different port
+PORT=3001 npm run dev
+```
+
+### Dependencies Issues
+
+```bash
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
