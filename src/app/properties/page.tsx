@@ -34,7 +34,7 @@ export default function PropertiesPage() {
     purchasePrice: '',
     purchaseDate: '',
     currentValue: '',
-    propertyType: 'Single Family',
+    propertyType: 'SINGLE_FAMILY',
     bedrooms: '',
     bathrooms: '',
     squareFeet: '',
@@ -120,6 +120,18 @@ export default function PropertiesPage() {
     }
   };
 
+  const formatPropertyType = (type: string) => {
+    const typeMap: { [key: string]: string } = {
+      'SINGLE_FAMILY': 'Single Family',
+      'MULTI_FAMILY': 'Multi Family',
+      'CONDO': 'Condo',
+      'TOWNHOUSE': 'Townhouse',
+      'COMMERCIAL': 'Commercial',
+      'LAND': 'Land',
+    };
+    return typeMap[type] || type;
+  };
+
   const openAddModal = () => {
     setEditingProperty(null);
     setFormData({
@@ -130,7 +142,7 @@ export default function PropertiesPage() {
       purchasePrice: '',
       purchaseDate: '',
       currentValue: '',
-      propertyType: 'Single Family',
+      propertyType: 'SINGLE_FAMILY',
       bedrooms: '',
       bathrooms: '',
       squareFeet: '',
@@ -241,7 +253,7 @@ export default function PropertiesPage() {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {property.propertyType}
+                  {formatPropertyType(property.propertyType)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {formatCurrency(property.purchasePrice)}
@@ -351,11 +363,12 @@ export default function PropertiesPage() {
                       onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
                       className="w-full border border-gray-300 rounded px-3 py-2"
                     >
-                      <option>Single Family</option>
-                      <option>Multi Family</option>
-                      <option>Condo</option>
-                      <option>Townhouse</option>
-                      <option>Commercial</option>
+                      <option value="SINGLE_FAMILY">Single Family</option>
+                      <option value="MULTI_FAMILY">Multi Family</option>
+                      <option value="CONDO">Condo</option>
+                      <option value="TOWNHOUSE">Townhouse</option>
+                      <option value="COMMERCIAL">Commercial</option>
+                      <option value="LAND">Land</option>
                     </select>
                   </div>
                   <div>
