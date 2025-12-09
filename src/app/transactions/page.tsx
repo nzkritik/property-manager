@@ -151,32 +151,6 @@ export default function TransactionsPage() {
     setShowModal(true);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
-
-  const convertToInputDate = (dateString: string) => {
-    return dateString.split('T')[0];
-  };
-
-  const openEditModal = (transaction: Transaction) => {
-    setEditingTransaction(transaction);
-    setFormData({
-      propertyId: transaction.propertyId,
-      transactionType: transaction.transactionType,
-      amount: transaction.amount.toString(),
-      date: convertToInputDate(transaction.date),
-      description: transaction.description || '',
-      status: transaction.status,
-      isIncome: transaction.isIncome,
-    });
-    setShowModal(true);
-  };
-
   const closeModal = () => {
     setShowModal(false);
     setEditingTransaction(null);
@@ -194,6 +168,18 @@ export default function TransactionsPage() {
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const convertToInputDate = (dateString: string) => {
+    return dateString.split('T')[0];
   };
 
   const getFilteredTransactions = () => {
@@ -494,7 +480,5 @@ export default function TransactionsPage() {
         </div>
       )}
     </div>
-
-
-}  );  );
+  );
 }

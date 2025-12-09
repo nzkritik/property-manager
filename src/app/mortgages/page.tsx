@@ -139,6 +139,16 @@ export default function MortgagesPage() {
     setShowModal(true);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setEditingMortgage(null);
+    setError(null);
+  };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
@@ -166,16 +176,6 @@ export default function MortgagesPage() {
       notes: mortgage.notes || '',
     });
     setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setEditingMortgage(null);
-    setError(null);
-  };
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
   };
 
   if (loading) {
@@ -390,17 +390,7 @@ export default function MortgagesPage() {
                     className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
                   >
                     {saving ? 'Saving...' : (editingMortgage ? 'Update' : 'Create')}
-
-
-
-
-
-
-
-
-
-
-}  );    </div>      )}        </div>          </div>            </div>              </form>                </div>                  </button>                  </button>
+                  </button>
                 </div>
               </form>
             </div>

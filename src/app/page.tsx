@@ -19,7 +19,7 @@ interface Expense {
   frequency: string;
 }
 
-export default function Home() {
+export default function DashboardPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [mortgages, setMortgages] = useState<Mortgage[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
