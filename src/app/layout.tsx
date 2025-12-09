@@ -33,7 +33,21 @@ export default function RootLayout({
         <title>Property Investment Manager</title>
         <meta name="description" content="Track and analyze your property investments" />
       </head>
-      <body>{children}</body>
+      <body className="bg-gray-50">
+        {/* Banner */}
+        <header className="bg-blue-900 shadow-lg print:hidden">
+          <div className="container mx-auto px-6 py-4">
+            <h1 className="text-3xl font-bold text-white" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+              Property Investment Management
+            </h1>
+          </div>
+        </header>
+        
+        {/* Main Content */}
+        <main>
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

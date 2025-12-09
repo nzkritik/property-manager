@@ -53,3 +53,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Banner styles */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Print styles */
+@media print {
+  header {
+    display: none;
+  }
+}
