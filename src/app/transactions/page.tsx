@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { formatDate, formatCurrency, convertToInputDate } from '@/lib/dateUtils';
+import DateInput from '@/components/DateInput';
 
 interface Transaction {
   id: string;
@@ -424,11 +425,10 @@ export default function TransactionsPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
-                    <input
-                      type="date"
+                    <DateInput
                       required
                       value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      onChange={(value) => setFormData({ ...formData, date: value })}
                       className="w-full border border-gray-300 rounded px-3 py-2"
                     />
                   </div>

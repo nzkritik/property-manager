@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { formatDate, formatCurrency, convertToInputDate } from '@/lib/dateUtils';
+import DateInput from '@/components/DateInput';
 
 interface Expense {
   id: string;
@@ -340,20 +341,18 @@ export default function ExpensesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
-                    <input
-                      type="date"
+                    <DateInput
                       required
                       value={formData.startDate}
-                      onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                      onChange={(value) => setFormData({ ...formData, startDate: value })}
                       className="w-full border border-gray-300 rounded px-3 py-2"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-                    <input
-                      type="date"
+                    <DateInput
                       value={formData.endDate}
-                      onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                      onChange={(value) => setFormData({ ...formData, endDate: value })}
                       className="w-full border border-gray-300 rounded px-3 py-2"
                     />
                   </div>
