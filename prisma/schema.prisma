@@ -84,15 +84,12 @@ model Transaction {
   propertyId        String
   property          Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
-  type              String    // rental_income, mortgage_payment, maintenance, utilities, insurance, property_tax, capital_improvement, other
+  transactionType   String    // Rent, Management Fee, Maintenance, Insurance, Mortgage, Rates, Body Corp Fees, Lawyer Fees, Accountant Fees, Other
   amount            Float
   date              DateTime
-  description       String
-  category          String
-  receiptUrl        String?
-  
-  isRecurring       Boolean   @default(false)
-  recurringInterval String?   // monthly, quarterly, annually
+  description       String?
+  status             String   @default("Complete") // Complete, Pending, Void
+  isIncome          Boolean  @default(false) // true for income (rent), false for expenses
   
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt

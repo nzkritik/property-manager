@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { PrismaClient } from '@prisma/client'
 import { z } from 'zod'
+
+const prisma = new PrismaClient()
 
 const transactionSchema = z.object({
   propertyId: z.string().uuid(),
@@ -42,20 +44,30 @@ export async function GET(request: NextRequest) {
 
     const transactions = await prisma.transaction.findMany({
       where,
-      include: { property: true },
+      include: {
+        property: {
+          select: {
+            id: true,
+            street: true,
+            city: true,
+            state: true,
+          },
+        },
+      },
       orderBy: { date: 'desc' },
     })
 
     return NextResponse.json(transactions)
-  } catch (error) {
+  } catch (error: any) {
+    console.error('GET transactions error:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch transactions' },
+      { error: 'Failed to fetch transactions', message: error.message },
       { status: 500 }
     )
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const body = await request.json()
     const validated = transactionSchema.parse(body)
@@ -66,10 +78,21 @@ export async function POST(request: NextRequest) {
         date: new Date(validated.date),
         category: categoryMap[validated.type],
       },
+      include: {
+        property: {
+          select: {
+            id: true,
+            street: true,
+            city: true,
+            state: true,
+          },
+        },
+      },
     })
 
     return NextResponse.json(transaction, { status: 201 })
-  } catch (error) {
+  } catch (error: any) {
+    console.error('POST transaction error:', error)
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid data', details: error.errors },
@@ -77,7 +100,7 @@ export async function POST(request: NextRequest) {
       )
     }
     return NextResponse.json(
-      { error: 'Failed to create transaction' },
+      { error: 'Failed to create transaction', message: error.message },
       { status: 500 }
     )
   }
