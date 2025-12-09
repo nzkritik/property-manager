@@ -48,6 +48,7 @@ export default function TransactionsPage() {
     status: 'Complete',
     isIncome: false,
   });
+  const [editingStatusId, setEditingStatusId] = useState<string | null>(null);
 
   const TRANSACTION_TYPES = [
     { value: 'Rent', isIncome: true },
@@ -189,6 +190,34 @@ export default function TransactionsPage() {
       transactionType: type,
       isIncome: typeInfo?.isIncome ?? false
     });
+  };
+
+  const handleStatusChange = async (transactionId: string, newStatus: string) => {
+    try {
+      const transaction = transactions.find(t => t.id === transactionId);
+      if (!transaction) return;
+
+      const res = await fetch(`/api/transactions/${transactionId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          propertyId: transaction.propertyId,
+          transactionType: transaction.transactionType,
+          amount: transaction.amount,
+          date: transaction.date,
+          description: transaction.description,
+          status: newStatus,
+          isIncome: transaction.isIncome,
+        }),
+      });
+
+      if (res.ok) {
+        await fetchTransactions();
+        setEditingStatusId(null);
+      }
+    } catch (error) {
+      console.error('Failed to update status:', error);
+    }
   };
 
   const getFilteredTransactions = () => {
@@ -345,13 +374,34 @@ export default function TransactionsPage() {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    transaction.status === 'Complete' ? 'bg-green-100 text-green-800' :
-                    transaction.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {transaction.status}
-                  </span>
+                  {editingStatusId === transaction.id ? (
+                    <select
+                      autoFocus
+                      value={transaction.status}
+                      onChange={(e) => handleStatusChange(transaction.id, e.target.value)}
+                      onBlur={() => setEditingStatusId(null)}
+                      className="text-xs rounded-full px-2.5 py-0.5 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {STATUSES.map(status => (
+                        <option key={status} value={status}>{status}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <button
+                      onClick={() => setEditingStatusId(transaction.id)}
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium hover:opacity-80 transition-opacity cursor-pointer ${
+                        transaction.status === 'Complete' ? 'bg-green-100 text-green-800' :
+                        transaction.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}
+                      title="Click to change status"
+                    >
+                      {transaction.status}
+                      <svg className="ml-1 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  )}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-500">
                   {transaction.description || '-'}
