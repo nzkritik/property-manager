@@ -95,7 +95,7 @@ model Transaction {
   updatedAt         DateTime  @updatedAt
   
   @@index([propertyId, date])
-  @@index([type])
+  @@index([transactionType])  // Changed from [type] to [transactionType]
 }
 
 model Mortgage {
