@@ -153,6 +153,29 @@ export default function TransactionsPage() {
     setShowModal(true);
   };
 
+  const openEditModal = (transaction: Transaction) => {
+    console.log('Opening edit modal for transaction:', transaction);
+    
+    try {
+      setEditingTransaction(transaction);
+      
+      setFormData({
+        propertyId: transaction.propertyId || '',
+        transactionType: transaction.transactionType || 'Rent',
+        amount: transaction.amount ? transaction.amount.toString() : '0',
+        date: transaction.date ? convertToInputDate(transaction.date) : new Date().toISOString().split('T')[0],
+        description: transaction.description || '',
+        status: transaction.status || 'Complete',
+        isIncome: transaction.isIncome ?? false,
+      });
+      
+      setShowModal(true);
+    } catch (error) {
+      console.error('Error opening edit modal:', error);
+      setError('Failed to load transaction data');
+    }
+  };
+
   const closeModal = () => {
     setShowModal(false);
     setEditingTransaction(null);
