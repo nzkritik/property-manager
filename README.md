@@ -24,6 +24,8 @@ The application will automatically:
 - Seed demo data (first run only)
 - Start on http://localhost:3000
 
+**macOS users:** The startup script will offer to create a terminal alias for easy access from anywhere!
+
 ### Manual Setup
 
 1. **Install Dependencies**
@@ -48,6 +50,67 @@ npm run db:seed
 ```bash
 npm run dev
 ```
+
+## 🍎 macOS Installation
+
+### Quick Setup (Recommended)
+```bash
+# Run the startup script - it will guide you through setup
+chmod +x start-app.sh
+./start-app.sh
+```
+
+The script will:
+1. Check your Node.js version
+2. Detect that you're on macOS
+3. Offer to create a terminal alias for quick access
+4. Set up the database and demo data
+5. Start the application
+
+### Manual macOS Setup
+
+**Option A: Run from current location**
+```bash
+cd /path/to/property-manager
+./start-app.sh
+```
+
+**Option B: Install to Applications and create alias**
+```bash
+# Move to Applications folder
+sudo mv property-manager /Applications/
+
+# Add alias to your shell profile
+echo 'alias property-manager="cd /Applications/property-manager && ./start-app.sh"' >> ~/.zshrc
+
+# Reload shell configuration
+source ~/.zshrc
+
+# Now start from anywhere
+property-manager
+```
+
+**Option C: Using Homebrew for Node.js**
+```bash
+# Install Node.js if not already installed
+brew install node
+
+# Navigate to project and run
+cd /path/to/property-manager
+./start-app.sh
+```
+
+### Accessing from Other Devices
+The startup script will display your Mac's local IP address. Access the app from other devices on your network:
+```
+http://YOUR_MAC_IP:3000
+```
+
+### Tips for macOS Users
+- 📌 Bookmark `http://localhost:3000` in Safari/Chrome
+- 🗄️ Backup your database: `prisma/dev.db`
+- 🔒 Database location: `/Applications/property-manager/prisma/dev.db` (if installed there)
+- ⏹️ Stop the server: Press `Ctrl+C` in Terminal
 
 ## 🐳 Docker Deployment
 
