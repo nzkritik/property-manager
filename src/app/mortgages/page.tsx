@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { formatDate, formatCurrency, convertToInputDate } from '@/lib/dateUtils';
 
 interface Mortgage {
   id: string;
@@ -143,22 +144,6 @@ export default function MortgagesPage() {
     setShowModal(false);
     setEditingMortgage(null);
     setError(null);
-  };
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
-
-  const convertToInputDate = (dateString: string) => {
-    return dateString.split('T')[0];
   };
 
   const openEditModal = (mortgage: Mortgage) => {

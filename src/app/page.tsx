@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { formatDate, formatCurrency } from '@/lib/dateUtils';
 
 interface Property {
   id: string;
@@ -78,18 +79,6 @@ export default function DashboardPage() {
 
   const calculateTotalMonthlyOutgoings = () => {
     return calculateMonthlyMortgagePayments() + calculateMonthlyExpenses();
-  };
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD', minimumFractionDigits: 0 }).format(value);
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
   };
 
   if (loading) {

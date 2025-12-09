@@ -158,6 +158,42 @@ Access at http://localhost:3000
 - Respects start and end dates
 - Creates transactions for entire current year (including future months)
 
+## ⚙️ Configuration
+
+### Environment Variables
+
+The application can be customized via the `.env` file:
+
+```env
+# Localization Settings
+NEXT_PUBLIC_DATE_FORMAT="dd/MM/yyyy"  # Options: dd/MM/yyyy, MM/dd/yyyy, yyyy-MM-dd
+NEXT_PUBLIC_LOCALE="en-NZ"             # Options: en-NZ, en-US, en-GB, etc.
+NEXT_PUBLIC_CURRENCY="NZD"             # Options: NZD, USD, GBP, AUD, etc.
+```
+
+**Supported Date Formats:**
+- `dd/MM/yyyy` - New Zealand format (default): 25/12/2024
+- `MM/dd/yyyy` - US format: 12/25/2024
+- `yyyy-MM-dd` - ISO format: 2024-12-25
+
+**Supported Locales:**
+- `en-NZ` - New Zealand English (default)
+- `en-US` - US English
+- `en-GB` - British English
+- `en-AU` - Australian English
+
+**Supported Currencies:**
+- `NZD` - New Zealand Dollar (default)
+- `USD` - US Dollar
+- `GBP` - British Pound
+- `AUD` - Australian Dollar
+- `EUR` - Euro
+
+After changing these values, restart the development server:
+```bash
+npm run dev
+```
+
 ## 🗄️ Database
 
 ### SQLite (Default - Local)

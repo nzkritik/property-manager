@@ -1,22 +1,7 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import Papa from 'papaparse';
-
-export const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
-};
-
-export const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-};
-
-export const formatPercentage = (value: number) => {
-  return `${value.toFixed(2)}%`;
-};
+import { formatDate, formatCurrency, formatPercentage } from './dateUtils';
 
 // Export Portfolio Overview to PDF
 export const exportPortfolioToPDF = (data: any) => {
