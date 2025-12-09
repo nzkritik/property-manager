@@ -98,6 +98,8 @@ export default function TransactionsPage() {
       const url = editingTransaction ? `/api/transactions/${editingTransaction.id}` : '/api/transactions';
       const method = editingTransaction ? 'PUT' : 'POST';
       
+      console.log('Submitting transaction:', formData);
+      
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -107,9 +109,11 @@ export default function TransactionsPage() {
       const data = await res.json();
       
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to save transaction');
+        console.error('API Error Response:', data);
+        throw new Error(data.error || data.message || 'Failed to save transaction');
       }
 
+      console.log('Transaction saved successfully:', data);
       await fetchTransactions();
       closeModal();
     } catch (error) {

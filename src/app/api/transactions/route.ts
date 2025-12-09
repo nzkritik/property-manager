@@ -70,14 +70,36 @@ export async function GET(request: NextRequest) {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const validated = transactionSchema.parse(body)
+    console.log('Received transaction body:', JSON.stringify(body, null, 2))
+
+    // Validate required fields
+    if (!body.propertyId) {
+      return NextResponse.json({ error: 'Property is required' }, { status: 400 })
+    }
+    if (!body.transactionType) {
+      return NextResponse.json({ error: 'Transaction type is required' }, { status: 400 })
+    }
+    if (!body.amount) {
+      return NextResponse.json({ error: 'Amount is required' }, { status: 400 })
+    }
+    if (!body.date) {
+      return NextResponse.json({ error: 'Date is required' }, { status: 400 })
+    }
+
+    const transactionData = {
+      propertyId: String(body.propertyId),
+      transactionType: String(body.transactionType),
+      amount: Number(body.amount),
+      date: new Date(body.date),
+      description: body.description ? String(body.description) : null,
+      status: body.status ? String(body.status) : 'Complete',
+      isIncome: Boolean(body.isIncome),
+    }
+
+    console.log('Creating transaction with data:', JSON.stringify(transactionData, null, 2))
 
     const transaction = await prisma.transaction.create({
-      data: {
-        ...validated,
-        date: new Date(validated.date),
-        category: categoryMap[validated.type],
-      },
+      data: transactionData,
       include: {
         property: {
           select: {
@@ -90,17 +112,18 @@ export async function POST(request: Request) {
       },
     })
 
+    console.log('Transaction created successfully:', transaction.id)
     return NextResponse.json(transaction, { status: 201 })
   } catch (error: any) {
     console.error('POST transaction error:', error)
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid data', details: error.errors },
-        { status: 400 }
-      )
-    }
+    console.error('Error message:', error.message)
+    console.error('Error stack:', error.stack)
     return NextResponse.json(
-      { error: 'Failed to create transaction', message: error.message },
+      {
+        error: 'Failed to create transaction',
+        message: error.message,
+        details: error.stack,
+      },
       { status: 500 }
     )
   }
