@@ -151,13 +151,25 @@ export default function TransactionsPage() {
     setShowModal(true);
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const convertToInputDate = (dateString: string) => {
+    return dateString.split('T')[0];
+  };
+
   const openEditModal = (transaction: Transaction) => {
     setEditingTransaction(transaction);
     setFormData({
       propertyId: transaction.propertyId,
       transactionType: transaction.transactionType,
       amount: transaction.amount.toString(),
-      date: transaction.date.split('T')[0],
+      date: convertToInputDate(transaction.date),
       description: transaction.description || '',
       status: transaction.status,
       isIncome: transaction.isIncome,
@@ -181,7 +193,7 @@ export default function TransactionsPage() {
   };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
   };
 
   const getFilteredTransactions = () => {
@@ -319,7 +331,7 @@ export default function TransactionsPage() {
             {filteredTransactions.map((transaction) => (
               <tr key={transaction.id} className={transaction.status === 'Void' ? 'bg-gray-50 opacity-60' : ''}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {new Date(transaction.date).toLocaleDateString()}
+                  {formatDate(transaction.date)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">{transaction.property.street || 'N/A'}</div>
@@ -482,5 +494,7 @@ export default function TransactionsPage() {
         </div>
       )}
     </div>
-  );
+
+
+}  );  );
 }

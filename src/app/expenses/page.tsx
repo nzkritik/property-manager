@@ -147,6 +147,18 @@ export default function ExpensesPage() {
     setShowModal(true);
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const convertToInputDate = (dateString: string) => {
+    return dateString.split('T')[0];
+  };
+
   const openEditModal = (expense: Expense) => {
     setEditingExpense(expense);
     setFormData({
@@ -155,8 +167,8 @@ export default function ExpensesPage() {
       amount: expense.amount.toString(),
       frequency: expense.frequency,
       description: expense.description || '',
-      startDate: expense.startDate.split('T')[0],
-      endDate: expense.endDate ? expense.endDate.split('T')[0] : '',
+      startDate: convertToInputDate(expense.startDate),
+      endDate: expense.endDate ? convertToInputDate(expense.endDate) : '',
       isRecurring: expense.isRecurring,
     });
     setShowModal(true);
@@ -169,7 +181,7 @@ export default function ExpensesPage() {
   };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
   };
 
   if (loading) {
@@ -225,7 +237,7 @@ export default function ExpensesPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(expense.amount)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{expense.frequency}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(expense.startDate).toLocaleDateString()}
+                  {formatDate(expense.startDate)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button onClick={() => openEditModal(expense)} className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
@@ -362,7 +374,18 @@ export default function ExpensesPage() {
                     disabled={saving}
                     className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
                   >
-                    {saving ? 'Saving...' : (editingExpense ? 'Update' : 'Create')}
+
+
+
+
+
+
+
+
+
+
+
+}  );    </div>      )}        </div>          </div>            </div>              </form>                </div>                  </button>                    {saving ? 'Saving...' : 'Save'}                    {saving ? 'Saving...' : (editingExpense ? 'Update' : 'Create')}
                   </button>
                 </div>
               </form>

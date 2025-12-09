@@ -160,6 +160,19 @@ export default function PropertiesPage() {
     setShowModal(true);
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const convertToInputDate = (dateString: string) => {
+    // Convert from ISO to yyyy-MM-dd for input
+    return dateString.split('T')[0];
+  };
+
   const openEditModal = (property: Property) => {
     setEditingProperty(property);
     setFormData({
@@ -168,7 +181,7 @@ export default function PropertiesPage() {
       state: property.state,
       zipCode: property.zipCode,
       purchasePrice: property.purchasePrice.toString(),
-      purchaseDate: property.purchaseDate.split('T')[0],
+      purchaseDate: convertToInputDate(property.purchaseDate),
       currentValue: property.estimatedValue.toString(),
       propertyType: property.propertyType,
       bedrooms: property.bedrooms?.toString() || '',
@@ -186,11 +199,7 @@ export default function PropertiesPage() {
   };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
+    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
   };
 
   if (loading) {
@@ -473,10 +482,19 @@ export default function PropertiesPage() {
                     disabled={saving}
                     className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {saving ? 'Saving...' : (editingProperty ? 'Update' : 'Create')}
-                  </button>
-                </div>
-              </form>
+                    {saving ? 'Saving...' : 'Save Property'}                {saving ? 'Saving...' : (editingProperty ? 'Update' : 'Create')}
+                  </button>                 </button>
+                </div>                </div>
+
+
+
+
+
+
+
+
+
+}  );    </div>      )}        </div>          </div>            </div>              </form>              </form>
             </div>
           </div>
         </div>
