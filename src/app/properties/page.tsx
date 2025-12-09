@@ -160,6 +160,10 @@ export default function PropertiesPage() {
     setShowModal(true);
   };
 
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
@@ -169,7 +173,6 @@ export default function PropertiesPage() {
   };
 
   const convertToInputDate = (dateString: string) => {
-    // Convert from ISO to yyyy-MM-dd for input
     return dateString.split('T')[0];
   };
 
@@ -196,10 +199,6 @@ export default function PropertiesPage() {
     setShowModal(false);
     setEditingProperty(null);
     setError(null);
-  };
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(value);
   };
 
   if (loading) {
@@ -482,19 +481,10 @@ export default function PropertiesPage() {
                     disabled={saving}
                     className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {saving ? 'Saving...' : 'Save Property'}                {saving ? 'Saving...' : (editingProperty ? 'Update' : 'Create')}
-                  </button>                 </button>
-                </div>                </div>
-
-
-
-
-
-
-
-
-
-}  );    </div>      )}        </div>          </div>            </div>              </form>              </form>
+                    {saving ? 'Saving...' : (editingProperty ? 'Update' : 'Create')}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
