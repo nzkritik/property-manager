@@ -162,6 +162,22 @@ Update `.env`:
 
 ## 🔧 Troubleshooting
 
+### Deprecated Package Warnings
+
+If you see warnings about deprecated packages (inflight, rimraf, glob, eslint):
+
+```bash
+# Clean install everything
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install
+
+# Update to latest versions
+npm update
+```
+
+These warnings are often from nested dependencies and don't affect functionality. The `.npmrc` file helps suppress some of these warnings.
+
 ### Prisma Module Errors
 
 If you get `Cannot find module '@prisma/engines'` or similar errors:
