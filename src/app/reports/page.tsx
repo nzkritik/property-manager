@@ -288,6 +288,8 @@ export default function ReportsPage() {
         <Link href="/transactions" className="text-blue-600 hover:text-blue-800">Transactions</Link>
         <span className="text-gray-400">|</span>
         <Link href="/reports" className="font-semibold text-gray-900">Reports</Link>
+        <span className="text-gray-400">|</span>
+        <Link href="/property-report" className="text-blue-600 hover:text-blue-800">Property Report</Link>
       </nav>
 
       <h1 className="text-3xl font-bold mb-6">Reports & Analytics</h1>
