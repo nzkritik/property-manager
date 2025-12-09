@@ -150,6 +150,14 @@ Access at http://localhost:3000
 - Financial statements
 - Export to PDF/CSV
 
+### Automatic Expense Sync
+- Recurring expenses automatically generate pending transactions
+- Syncs on app startup
+- Manual sync available on Expenses page
+- Prevents duplicate transactions
+- Respects start and end dates
+- Creates transactions for entire current year (including future months)
+
 ## 🗄️ Database
 
 ### SQLite (Default - Local)

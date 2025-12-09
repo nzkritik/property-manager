@@ -46,6 +46,7 @@ export default function ExpensesPage() {
     endDate: '',
     isRecurring: true,
   });
+  const [syncing, setSyncing] = useState(false);
 
   const EXPENSE_TYPES = [
     'Rates',
@@ -132,6 +133,26 @@ export default function ExpensesPage() {
     }
   };
 
+  const handleSyncExpenses = async () => {
+    setSyncing(true);
+    try {
+      const response = await fetch('/api/sync-expenses', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert(`✅ ${data.message}`);
+      } else {
+        alert(`❌ Sync failed: ${data.error}`);
+      }
+    } catch (error) {
+      console.error('Failed to sync expenses:', error);
+      alert('❌ Failed to sync expenses');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   const openAddModal = () => {
     setEditingExpense(null);
     setFormData({
@@ -206,12 +227,24 @@ export default function ExpensesPage() {
 
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Property Expenses</h1>
-        <button
-          onClick={openAddModal}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + Add Expense
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleSyncExpenses}
+            disabled={syncing}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50 flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            {syncing ? 'Syncing...' : 'Sync to Transactions'}
+          </button>
+          <button
+            onClick={openAddModal}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            + Add Expense
+          </button>
+        </div>
       </div>
 
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
