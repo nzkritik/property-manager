@@ -29,7 +29,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         lastValuationDate: new Date(),
         valuationSource: body.valuationSource || 'Manual Entry',
         
-        // Mortgage
+        // Mortgage (preserve existing if not provided)
         outstandingBalance: body.outstandingBalance ? Number(body.outstandingBalance) : 0,
         interestRate: body.interestRate ? Number(body.interestRate) : 0,
         monthlyPayment: body.monthlyPayment ? Number(body.monthlyPayment) : 0,

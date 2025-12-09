@@ -19,10 +19,10 @@ export async function GET() {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const body = await request.json()
-    console.log('Received POST body:', JSON.stringify(body, null, 2))
+    console.log('Received transaction body:', JSON.stringify(body, null, 2))
 
     const property = await prisma.property.create({
       data: {
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
         lastValuationDate: new Date(),
         valuationSource: body.valuationSource || 'Manual Entry',
 
-        // Mortgage
+        // Mortgage (default values - will be set via Mortgages page)
         outstandingBalance: body.outstandingBalance ? Number(body.outstandingBalance) : 0,
         interestRate: body.interestRate ? Number(body.interestRate) : 0,
         monthlyPayment: body.monthlyPayment ? Number(body.monthlyPayment) : 0,

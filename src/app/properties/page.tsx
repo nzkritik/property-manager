@@ -41,6 +41,15 @@ export default function PropertiesPage() {
     bathrooms: '',
     squareFeet: '',
     rentAmount: '',
+    yearBuilt: '',
+    isRented: false,
+    tenantName: '',
+    leaseStart: '',
+    leaseEnd: '',
+    annualPropertyTax: '',
+    insurance: '',
+    hoaFees: '',
+    maintenanceBudget: '',
   });
 
   const PROPERTY_TYPES = [
@@ -90,6 +99,15 @@ export default function PropertiesPage() {
         bathrooms: formData.bathrooms || null,
         squareFeet: formData.squareFeet || null,
         rentAmount: formData.rentAmount || null,
+        yearBuilt: formData.yearBuilt || null,
+        isRented: formData.isRented,
+        tenantName: formData.tenantName || null,
+        leaseStart: formData.leaseStart ? new Date(formData.leaseStart).toISOString() : null,
+        leaseEnd: formData.leaseEnd ? new Date(formData.leaseEnd).toISOString() : null,
+        annualPropertyTax: formData.annualPropertyTax || null,
+        insurance: formData.insurance || null,
+        hoaFees: formData.hoaFees || null,
+        maintenanceBudget: formData.maintenanceBudget || null,
       };
 
       console.log('Submitting:', payload);
@@ -158,6 +176,15 @@ export default function PropertiesPage() {
       bathrooms: '',
       squareFeet: '',
       rentAmount: '',
+      yearBuilt: '',
+      isRented: false,
+      tenantName: '',
+      leaseStart: '',
+      leaseEnd: '',
+      annualPropertyTax: '',
+      insurance: '',
+      hoaFees: '',
+      maintenanceBudget: '',
     });
     setShowModal(true);
   };
@@ -177,6 +204,15 @@ export default function PropertiesPage() {
       bathrooms: property.bathrooms?.toString() || '',
       squareFeet: property.sqft?.toString() || '',
       rentAmount: property.monthlyRent?.toString() || '',
+      yearBuilt: property.yearBuilt?.toString() || '',
+      isRented: property.isRented || false,
+      tenantName: property.tenantName || '',
+      leaseStart: property.leaseStart ? convertToInputDate(property.leaseStart) : '',
+      leaseEnd: property.leaseEnd ? convertToInputDate(property.leaseEnd) : '',
+      annualPropertyTax: property.annualPropertyTax?.toString() || '',
+      insurance: property.insurance?.toString() || '',
+      hoaFees: property.hoaFees?.toString() || '',
+      maintenanceBudget: property.maintenanceBudget?.toString() || '',
     });
     setShowModal(true);
   };
@@ -291,7 +327,7 @@ export default function PropertiesPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h2 className="text-2xl font-bold mb-4">
                 {editingProperty ? 'Edit Property' : 'Add New Property'}
@@ -303,156 +339,295 @@ export default function PropertiesPage() {
                 </div>
               )}
               
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Address *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.address}
-                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      City *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.city}
-                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.state}
-                      onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ZIP Code
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.zipCode}
-                      onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Property Type *
-                    </label>
-                    <select
-                      required
-                      value={formData.propertyType}
-                      onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    >
-                      {PROPERTY_TYPES.map(type => (
-                        <option key={type.value} value={type.value}>
-                          {type.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Purchase Price *
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      required
-                      value={formData.purchasePrice}
-                      onChange={(e) => setFormData({ ...formData, purchasePrice: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Purchase Date *
-                    </label>
-                    <DateInput
-                      required
-                      value={formData.purchaseDate}
-                      onChange={(value) => setFormData({ ...formData, purchaseDate: value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Current Value *
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      required
-                      value={formData.currentValue}
-                      onChange={(e) => setFormData({ ...formData, currentValue: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Bedrooms
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.bedrooms}
-                      onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Bathrooms
-                    </label>
-                    <input
-                      type="number"
-                      step="0.5"
-                      value={formData.bathrooms}
-                      onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Square Feet
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.squareFeet}
-                      onChange={(e) => setFormData({ ...formData, squareFeet: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Monthly Rent
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.rentAmount}
-                      onChange={(e) => setFormData({ ...formData, rentAmount: e.target.value })}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                    />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Basic Information */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-700 border-b pb-2">Basic Information</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Address *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.address}
+                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        City *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.city}
+                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        State
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.state}
+                        onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        ZIP Code
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.zipCode}
+                        onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Property Type *
+                      </label>
+                      <select
+                        required
+                        value={formData.propertyType}
+                        onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      >
+                        {PROPERTY_TYPES.map(type => (
+                          <option key={type.value} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-end space-x-3 mt-6">
+
+                {/* Purchase Information */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-700 border-b pb-2">Purchase Information</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Purchase Price *
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        required
+                        value={formData.purchasePrice}
+                        onChange={(e) => setFormData({ ...formData, purchasePrice: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Purchase Date *
+                      </label>
+                      <DateInput
+                        required
+                        value={formData.purchaseDate}
+                        onChange={(value) => setFormData({ ...formData, purchaseDate: value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Current Value *
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        required
+                        value={formData.currentValue}
+                        onChange={(e) => setFormData({ ...formData, currentValue: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Property Details */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-700 border-b pb-2">Property Details</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Bedrooms
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.bedrooms}
+                        onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Bathrooms
+                      </label>
+                      <input
+                        type="number"
+                        step="0.5"
+                        value={formData.bathrooms}
+                        onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Square Feet
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.squareFeet}
+                        onChange={(e) => setFormData({ ...formData, squareFeet: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Year Built
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.yearBuilt}
+                        onChange={(e) => setFormData({ ...formData, yearBuilt: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        placeholder="e.g., 2015"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rental Information */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-700 border-b pb-2">Rental Information</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="col-span-2">
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={formData.isRented}
+                          onChange={(e) => setFormData({ ...formData, isRented: e.target.checked })}
+                          className="mr-2"
+                        />
+                        <span className="text-sm font-medium text-gray-700">Currently Rented</span>
+                      </label>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Monthly Rent
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={formData.rentAmount}
+                        onChange={(e) => setFormData({ ...formData, rentAmount: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    {formData.isRented && (
+                      <>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Tenant Name
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.tenantName}
+                            onChange={(e) => setFormData({ ...formData, tenantName: e.target.value })}
+                            className="w-full border border-gray-300 rounded px-3 py-2"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Lease Start Date
+                          </label>
+                          <DateInput
+                            value={formData.leaseStart}
+                            onChange={(value) => setFormData({ ...formData, leaseStart: value })}
+                            className="w-full border border-gray-300 rounded px-3 py-2"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Lease End Date
+                          </label>
+                          <DateInput
+                            value={formData.leaseEnd}
+                            onChange={(value) => setFormData({ ...formData, leaseEnd: value })}
+                            className="w-full border border-gray-300 rounded px-3 py-2"
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Annual Expenses */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-700 border-b pb-2">Annual Expenses</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Annual Property Tax
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={formData.annualPropertyTax}
+                        onChange={(e) => setFormData({ ...formData, annualPropertyTax: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Annual Insurance
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={formData.insurance}
+                        onChange={(e) => setFormData({ ...formData, insurance: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        HOA / Body Corporate Fees (Annual)
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={formData.hoaFees}
+                        onChange={(e) => setFormData({ ...formData, hoaFees: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Annual Maintenance Budget
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={formData.maintenanceBudget}
+                        onChange={(e) => setFormData({ ...formData, maintenanceBudget: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-3 mt-6 pt-4 border-t">
                   <button
                     type="button"
                     onClick={closeModal}
