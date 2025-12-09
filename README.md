@@ -97,38 +97,6 @@ Access at http://localhost:3000
 ### PostgreSQL (Optional - Cloud)
 Update `.env`:
 
-## 📂 Git Setup
-
-### Initialize Git Repository
-```bash
-git init
-```
-
-### Create .gitignore
-```bash
-# Node modules
-node_modules/
-# Build output
-dist/
-# Environment variables
-.env
-```
-
-### First Commit
-```bash
-git add .
-git commit -m "Initial commit"
-```
-
-### Connect to GitHub
-1. Create a new repository on GitHub.
-2. Follow the instructions to push an existing repository from the command line.
-```bash
-git remote add origin <REPO_URL>
-git branch -M main
-git push -u origin main
-```
-
 ## 🔧 Troubleshooting
 
 ### Prisma Module Errors
