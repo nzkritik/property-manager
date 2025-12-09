@@ -44,7 +44,7 @@ async function main() {
       propertyType: 'SINGLE_FAMILY',
       bedrooms: 3,
       bathrooms: 2,
-      sqft: 1500,
+      sqm: 140,  // Changed from sqft: 1500 (converted to m²)
       yearBuilt: 2015,
       
       monthlyRent: 3200,
@@ -87,7 +87,7 @@ async function main() {
       propertyType: 'CONDO',
       bedrooms: 2,
       bathrooms: 1,
-      sqft: 1100,
+      sqm: 102,  // Changed from sqft: 1100
       yearBuilt: 2018,
       
       monthlyRent: 2800,
@@ -130,7 +130,7 @@ async function main() {
       propertyType: 'TOWNHOUSE',
       bedrooms: 3,
       bathrooms: 2.5,
-      sqft: 1350,
+      sqm: 125,  // Changed from sqft: 1350
       yearBuilt: 2020,
       
       monthlyRent: 2600,

@@ -56,7 +56,7 @@ export async function POST(request: Request) {
         propertyType: String(body.propertyType),
         bedrooms: body.bedrooms ? Number(body.bedrooms) : null,
         bathrooms: body.bathrooms ? Number(body.bathrooms) : null,
-        sqft: body.squareFeet ? Number(body.squareFeet) : null,
+        sqm: body.squareMeters ? Number(body.squareMeters) : null, // Changed from sqft
         yearBuilt: body.yearBuilt ? Number(body.yearBuilt) : null,
 
         // Rental Info

@@ -49,7 +49,7 @@ model Property {
   propertyType      String        // Changed from PropertyType enum to String
   bedrooms          Int?
   bathrooms         Float?
-  sqft              Int?
+  sqm               Int?          // Changed from sqft to sqm (square meters)
   yearBuilt         Int?
   
   // Rental Info

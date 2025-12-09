@@ -2,6 +2,8 @@
 
 A modern, responsive web application for tracking and analyzing property investments with local-first deployment capabilities.
 
+**Note:** This application uses metric measurements (square meters) for property sizes.
+
 ## 🚀 Quick Start
 
 ### Local Development (Recommended for single users)

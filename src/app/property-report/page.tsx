@@ -16,7 +16,7 @@ interface Property {
   propertyType: string;
   bedrooms: number | null;
   bathrooms: number | null;
-  sqft: number | null;
+  sqm: number | null; // Changed from sqft
   yearBuilt: number | null;
   monthlyRent: number | null;
   isRented: boolean;
@@ -246,8 +246,8 @@ export default function PropertyReportPage() {
                 <div className="font-semibold">{selectedProperty.bedrooms || 'N/A'} / {selectedProperty.bathrooms || 'N/A'}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Square Feet</div>
-                <div className="font-semibold">{selectedProperty.sqft ? selectedProperty.sqft.toLocaleString() : 'N/A'} sqft</div>
+                <div className="text-sm text-gray-500">Square Meters</div>
+                <div className="font-semibold">{selectedProperty.sqm ? selectedProperty.sqm.toLocaleString() : 'N/A'} m²</div>
               </div>
               <div>
                 <div className="text-sm text-gray-500">Year Built</div>

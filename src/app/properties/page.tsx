@@ -17,7 +17,7 @@ interface Property {
   propertyType: string;
   bedrooms?: number | null;
   bathrooms?: number | null;
-  sqft?: number | null;
+  sqm?: number | null;  // Changed from sqft
   monthlyRent?: number | null;
 }
 
@@ -39,7 +39,7 @@ export default function PropertiesPage() {
     propertyType: 'SINGLE_FAMILY',
     bedrooms: '',
     bathrooms: '',
-    squareFeet: '',
+    squareMeters: '',  // Changed from squareFeet
     rentAmount: '',
     yearBuilt: '',
     isRented: false,
@@ -97,7 +97,7 @@ export default function PropertiesPage() {
         propertyType: formData.propertyType,
         bedrooms: formData.bedrooms || null,
         bathrooms: formData.bathrooms || null,
-        squareFeet: formData.squareFeet || null,
+        sqm: formData.squareMeters || null, // Changed from sqft
         rentAmount: formData.rentAmount || null,
         yearBuilt: formData.yearBuilt || null,
         isRented: formData.isRented,
@@ -174,7 +174,7 @@ export default function PropertiesPage() {
       propertyType: 'SINGLE_FAMILY',
       bedrooms: '',
       bathrooms: '',
-      squareFeet: '',
+      squareMeters: '',
       rentAmount: '',
       yearBuilt: '',
       isRented: false,
@@ -202,7 +202,7 @@ export default function PropertiesPage() {
       propertyType: property.propertyType,
       bedrooms: property.bedrooms?.toString() || '',
       bathrooms: property.bathrooms?.toString() || '',
-      squareFeet: property.sqft?.toString() || '',
+      squareMeters: property.sqm?.toString() || '',
       rentAmount: property.monthlyRent?.toString() || '',
       yearBuilt: property.yearBuilt?.toString() || '',
       isRented: property.isRented || false,
@@ -483,12 +483,12 @@ export default function PropertiesPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Square Feet
+                        Square Meters
                       </label>
                       <input
                         type="number"
-                        value={formData.squareFeet}
-                        onChange={(e) => setFormData({ ...formData, squareFeet: e.target.value })}
+                        value={formData.squareMeters}
+                        onChange={(e) => setFormData({ ...formData, squareMeters: e.target.value })}
                         className="w-full border border-gray-300 rounded px-3 py-2"
                       />
                     </div>
