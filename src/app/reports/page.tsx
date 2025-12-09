@@ -2,6 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import {
+  exportPortfolioToPDF,
+  exportCashFlowToPDF,
+  exportPropertyPerformanceToPDF,
+  exportTransactionsToPDF,
+  exportExpenseBreakdownToPDF,
+  exportPortfolioToCSV,
+  exportCashFlowToCSV,
+  exportPropertyPerformanceToCSV,
+  exportTransactionsToCSV,
+  exportExpenseBreakdownToCSV,
+} from '@/lib/exportUtils';
 
 interface Property {
   id: string;
@@ -232,6 +244,46 @@ export default function ReportsPage() {
   const propertyPerformance = calculatePropertyPerformance();
   const transactionSummary = calculateTransactionSummary();
   const expenseBreakdown = calculateExpenseBreakdown();
+
+  const handleExportPDF = () => {
+    switch (selectedReport) {
+      case 'portfolio':
+        exportPortfolioToPDF(portfolioMetrics);
+        break;
+      case 'cashflow':
+        exportCashFlowToPDF(cashFlow);
+        break;
+      case 'performance':
+        exportPropertyPerformanceToPDF(propertyPerformance);
+        break;
+      case 'transactions':
+        exportTransactionsToPDF(transactionSummary);
+        break;
+      case 'expenses':
+        exportExpenseBreakdownToPDF(expenseBreakdown);
+        break;
+    }
+  };
+
+  const handleExportCSV = () => {
+    switch (selectedReport) {
+      case 'portfolio':
+        exportPortfolioToCSV(portfolioMetrics);
+        break;
+      case 'cashflow':
+        exportCashFlowToCSV(cashFlow);
+        break;
+      case 'performance':
+        exportPropertyPerformanceToCSV(propertyPerformance);
+        break;
+      case 'transactions':
+        exportTransactionsToCSV(transactionSummary);
+        break;
+      case 'expenses':
+        exportExpenseBreakdownToCSV(expenseBreakdown);
+        break;
+    }
+  };
 
   if (loading) {
     return <div className="container mx-auto p-6">Loading...</div>;
@@ -554,10 +606,22 @@ export default function ReportsPage() {
         <div className="flex justify-between items-center">
           <span className="text-sm text-gray-600">Export this report:</span>
           <div className="flex gap-2">
-            <button className="px-4 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+            <button
+              onClick={handleExportPDF}
+              className="px-4 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50 flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
               Export to PDF
             </button>
-            <button className="px-4 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+            <button
+              onClick={handleExportCSV}
+              className="px-4 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50 flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
               Export to CSV
             </button>
           </div>
